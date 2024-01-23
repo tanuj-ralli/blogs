@@ -54,7 +54,8 @@ async def retrieve_a_list_of_all_blog_post(user: user_dependency, db: db_depende
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 async def retrieve_details_of_a_specific_blog_post(user: user_dependency, db: db_dependency, id: int = Path(gt=0)):
-    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'), Blogs.is_deleted == False).first()
+    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'),
+                                        Blogs.is_deleted == False).first()
     if blog_model is not None:
         return blog_model
     else:
@@ -66,7 +67,7 @@ async def create_a_new_blog_post(user: user_dependency, db: db_dependency, new_b
     blog_model = Blogs(
         title=new_blog.title,
         content=new_blog.content,
-        timestamp=datetime.utcfromtimestamp(int(new_blog.timestamp/1000)),
+        timestamp=datetime.utcfromtimestamp(int(new_blog.timestamp / 1000)),
         auther=user.get('id'),
     )
     db.add(blog_model)
@@ -76,19 +77,21 @@ async def create_a_new_blog_post(user: user_dependency, db: db_dependency, new_b
 @router.put("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_an_existing_blog_post(user: user_dependency, db: db_dependency, updated_blog: BlogsRequest,
                                        id: int = Path(gt=0)):
-    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'), Blogs.is_deleted == False).first()
+    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'),
+                                        Blogs.is_deleted == False).first()
     if blog_model is None:
         raise HTTPException(status_code=404, detail='Blog not found')
     blog_model.title = updated_blog.title
     blog_model.content = updated_blog.content
-    blog_model.timestamp = datetime.utcfromtimestamp(int(updated_blog.timestamp/1000))
+    blog_model.timestamp = datetime.utcfromtimestamp(int(updated_blog.timestamp / 1000))
     db.add(blog_model)
     db.commit()
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_a_blog_post(user: user_dependency, db: db_dependency, id: int = Path(gt=0)):
-    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'), Blogs.is_deleted == False).first()
+    blog_model = db.query(Blogs).filter(Blogs.id == id, Blogs.auther == user.get('id'),
+                                        Blogs.is_deleted == False).first()
     if blog_model is None:
         raise HTTPException(status_code=404, detail='Blog not found')
     blog_model.is_deleted = True

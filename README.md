@@ -21,6 +21,7 @@ Once docker container is up,
 Apis can be accessed at swagger url: [localhost:9999/docs](http://localhost:9999/docs)
 
 ### About Database Schema
+Postgres Database is used to support the data storage.  
 Following show the available tables, their structures and interconnectivity used in Blog App.  
 
 Table User:  
