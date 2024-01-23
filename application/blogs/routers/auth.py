@@ -55,8 +55,15 @@ class Token(BaseModel):
     token_type: str
 
 
+def validate_username(username: str, db):
+    user = db.query(Users).filter_by(username=username).first()
+    if user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+
+
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register_a_new_user(db: db_dependency, user_details: UserRequest):
+    validate_username(user_details.username, db)
     user_model = Users(
         username=user_details.username,
         first_name=user_details.first_name,

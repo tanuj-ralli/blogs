@@ -3,7 +3,6 @@
 *.pid
 .idea/
 __pycache__/
-django_files/__pycache__/
 
 # database files
 db.sqlite3
